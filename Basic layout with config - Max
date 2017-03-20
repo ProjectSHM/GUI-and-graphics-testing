@@ -91,7 +91,7 @@ def contents(screen_):
     contents_frame.grid_columnconfigure(0, weight=1)
 
     ### ~~ creates labels to explain what each button does
-    theory_label = Label(box_frame, text="Some information here", bg="white", bd=1, relief=SOLID)
+    theory_label = Label(box_frame, text="Some information here".lower(), bg="white", bd=1, relief=SOLID)
     vel_label = Label(box_frame, text="Some information here", bd=1, bg="white", relief=SOLID)
     phase_label = Label(box_frame, text="Some information here", bd=1, bg="white", relief=SOLID)
     test_label = Label(box_frame, text="Some information here", bd=1, bg="white", relief=SOLID)
@@ -160,49 +160,61 @@ def text_image(screen_):
 
     ### ~~ allows for screen alignment for text/image frame to be adjusted to stretch with window resize
     screen_.grid_rowconfigure(2, weight=10)
+    ### ~~ creates frame to pack bulk text and images
     bulk_text_frame = Frame(screen_, bg="#CCFFFF")
     bulk_text_frame.grid(row=2, column=0, sticky=NS)
+    ### ~~ configures frame so images and text stretch to fit
     bulk_text_frame.grid_columnconfigure(0, weight=1)
     bulk_text_frame.grid_columnconfigure(1, weight=1)
 
+    ### ~~ creates text frame with boarder and grids it to left side it onto the text/image frame
     text_frame = Frame(bulk_text_frame, relief=SOLID, bd=1, bg="white")
     text_frame.grid(row=0, column=0, sticky=W+N+S+E, padx=20)
+    ### ~~ configures text frame to fit required space
     text_frame.grid_columnconfigure(0, weight=1)
     text_frame.grid_rowconfigure(0, weight=1)
 
-    text_label = Label(text_frame, text="information about screen", bg="white", width=75)
+    ### ~~ creates text frame to input text for reader 'explains needed info'
+    ### ~~ have incuded unicode for pi here to demonstrate how to insert greek letters into text
+    text_label = Label(text_frame, text="information about screen\n here is pi: "+ u'\u03A0'.lower(), bg="white", width=75)
     text_label.grid(row=0, column=0, sticky=N+S+E+W, padx=20, pady=20)
-    
+
+    ### ~~ creates image frame with boarder and grids it to left side it onto the text/image frame    
     image_frame = Frame(bulk_text_frame, relief=RIDGE, bd=5, bg="white")
     image_frame.grid(row=0, column=1, sticky=W+N+S+E, padx=20)
+    ### ~~ configures image frame to fit required space    
     image_frame.grid_columnconfigure(0, weight=2)
     image_frame.grid_rowconfigure(0, weight=1)
     image_frame.grid_rowconfigure(1, weight=1)
 
+    ### ~~ creates canvas to draw animations
     image = Canvas(image_frame, width=400, height=320)
-    canvas_width = image.winfo_width()
-    canvas_height = image.winfo_height()
-    print "canvas width: ", canvas_width, "canvas height: ", canvas_height
+    ### ~~ creates text to show that image will be inserted and places it on relevant place on screen
     image.create_text(150,160, anchor=CENTER, text="Image")
     image.grid(row=0, column=0, pady=10, padx=10, sticky=N+E+S+W)
 
+    ### ~~ creates button to initialize animation
     execute_button = Button(image_frame, text="Execute")
     execute_button.grid(row=1, column=0, sticky=E+S, padx=10, pady=10, ipady=3, ipadx=2)
 
 def help_screen():
     """creates help menu and freezes current screen when help menu is open"""
+    ### ~~ creates window to open up on command of help button.
     help_ = Toplevel()
     help_.focus_set()
     help_.grab_set()
     help_.title("Help")
     help_.geometry("350x600")
     help_.minsize(250, 500)
-    
+
+### ~~ creates variables for width and height of main screen
 width_ = 1000
 height_ = 650
 
+### ~~ creates font types, needs to be inserted into dictionary to allow for file storage
 LARGE_FONT = ("Verdana", 16)
 
+### ~~ creates root window and configures to correct dimensions
 root = Tk()
 root.title("Simple Harmonic Motion")
 root.geometry(str(width_)+"x"+str(height_))
@@ -211,16 +223,19 @@ root.maxsize(width_+250, height_+50)
 root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(0, weight=1)
 
+### ~~ creates relevant screens and assigns them to root
 home_screen = Frame(root, bg="#CCFFFF")
 theory_screen = Frame(root, bg="#CCFFFF")
 vel_screen = Frame(root, bg="#CCFFFF")
 phase_screen = Frame(root, bg="#CCFFFF")
 test_screen = Frame(root, bg="#CCFFFF")
 
+### ~~ grids screens on top of each other
 for screen_ in (home_screen, theory_screen, vel_screen, phase_screen, test_screen):
     screen_.grid(row=0, column=0, sticky=N+E+S+W)
 screen_raise(home_screen)
-    
+
+### ~~ calls functions to pack relevant pieces from functions to     
 title(home_screen, "Home - Contents Page", LARGE_FONT, 10)
 intro_text(home_screen, "Welcome to project SMH, this piece of software has been designed with you in mind.\nPlease choose one of the following\
 topics to begin")
@@ -248,7 +263,7 @@ nav_buttons(phase_screen)
 title(test_screen, "Test yourself", LARGE_FONT, 10)
 intro_text(test_screen, "Welcome to project SMH, this piece of software has been designed with you in mind.\nPlease choose one of the following\
 topics to begin")
-
 nav_buttons(test_screen)
 
+### ~~ loops root screen
 root.mainloop()
