@@ -6,51 +6,72 @@ def screen_raise(screen):
     screen.tkraise()
 
 def title(screen_, text_, font_, pad_):
+    """creates a title and packs to screen"""
+    ### ~~ allows for screen alignment for title frame to be adjusted to stretch with window resize
     screen_.grid_columnconfigure(0, weight=1)
+    ### ~~ creates a title frame so that all widgets may be packed onto this to allow for screen resize and packs it to the screen
     title_frame = Frame(screen_, bg="#CCFFFF")
     title_frame.grid(row=0, column=0, sticky=N+E+W, padx=pad_, pady=pad_)
-    
+
+    ### ~~ creates a help button and grids it to the title frame
     help_button = Button(title_frame, text="Help", command=help_screen)
     help_button.grid(row=0, column=3, sticky=W, ipadx=15, ipady=3, padx=2)
 
+    ### ~~ creates a load button and grids it to title frame
     load_button = Button(title_frame, text="Load")
     load_button.grid(row=0, column=0, sticky=E, ipadx=15, ipady=3, padx=2)
 
+    ### ~~ creates a frame to put the header inside with boarder and grids to title frame this prevents title from stretching with window resize
     header_frame = Frame(title_frame, relief=RIDGE, bd=5)
     header_frame.grid(row=0, column=2)
+    ### ~~ creates the title from function input and grids to title frame
     title = Label(header_frame, text=text_ , font=font_, bg="white")
     title.grid(row=0, column=2, sticky=W+E, ipadx=30)
+    ### ~~ alows relevent grid in title to strecth to accomdate Label
     title_frame.grid_columnconfigure(2, weight=1)
     title_frame.grid_rowconfigure(0, weight=3)
 
+    ### ~~ creates and grids save button 
     save_button = Button(title_frame, text="Save")
     save_button.grid(row=0, column=1, sticky=E, ipadx=15, ipady=3, padx=2)
+    ### ~~ bypass' save button for relevent screens and replaces with empty label to keep screen configuration in line
     if screen_ == home_screen:
         save_button.grid_remove()
         Frame(title_frame, bg="#CCFFFF").grid(row=0, column=1, sticky=E, ipadx=32, ipady=15, padx=2)
 
+    ### ~~ creates quit button and grids to title frame, will have save functionality added during intergration
     quit_button = Button(title_frame, text="Quit", command=lambda:root.destroy())
     quit_button.grid(row=0, column=4, sticky=E, ipadx=15, ipady=3, padx=2)
 
 def intro_text(screen_, text_):
+    """creates an intro text box with text and packs it to screen"""
+    ### ~~ allows for screen alignment for intro frame to be adjusted to stretch with window resize
     screen_.grid_rowconfigure(1, weight=1)
+    ### ~~ creates a intro frame so that all widgets may be packed onto this to allow for screen resize and packs it to the screen
     intro_frame = Frame(screen_, bg="#CCFFFF")
     intro_frame.grid(row=1, column=0, pady=10)
+    ### ~~ configures intro frame to allow for screen resolution stretch
     intro_frame.grid_columnconfigure(0, weight=1)
     intro_frame.grid_rowconfigure(0, weight=1)
-    
+
+    ### ~~ creates intro text with boarder and grids to intro frame
     intro_label = Label(intro_frame, text=text_, bg="white",
                         relief=SOLID, bd=1)
     intro_label.grid(row=1, ipady=5, ipadx=5, sticky=N, pady=10)
 
 def contents(screen_):
+    """packs a box with all relevent contents buttons to contents screen"""
+    ### ~~ allows for screen alignment for contents frame to be adjusted to stretch with window resize
     screen_.grid_rowconfigure(2, weight=2)
+    ### ~~ creates a contents frame so that all widgets may be packed onto this to allow for screen resize and packs it to the screen
     contents_frame = Frame(screen_, bg="#CCFFFF")
     contents_frame.grid(row=2, column=0, sticky=N+E+W, pady=10)
 
+    ### ~~ creates box frame with boarder to have widgets packed onto
     box_frame = Frame(contents_frame, relief=RIDGE, bd=5, bg="white")
     box_frame.grid(row=0, column=0, sticky=N+S)
-    
+
+    ### ~~ creates buttons to be pressed to rase relevent screen
     theory_button = Button(box_frame, text="Theory",
                                command=lambda:screen_raise(theory_screen))
     vel_button = Button(box_frame, text="Velocity and Acceleration",
@@ -60,30 +81,39 @@ def contents(screen_):
     test_button = Button(box_frame, text="Test Yourself",
                              command=lambda:screen_raise(test_screen))
 
+    ### ~~ grids butons to box_frame in relevent order
     x = 0
     for button in (theory_button, vel_button, phase_button, test_button):
         button.grid(row=x, column=0, sticky=W+E, padx=50, pady=20, ipady=10)
         contents_frame.grid_rowconfigure(x, weight=1)
         x += 1
+    ### ~~ configures buttons to stretch to fill space
     contents_frame.grid_columnconfigure(0, weight=1)
 
+    ### ~~ creates labels to explain what each button does
     theory_label = Label(box_frame, text="Some information here", bg="white", bd=1, relief=SOLID)
     vel_label = Label(box_frame, text="Some information here", bd=1, bg="white", relief=SOLID)
     phase_label = Label(box_frame, text="Some information here", bd=1, bg="white", relief=SOLID)
     test_label = Label(box_frame, text="Some information here", bd=1, bg="white", relief=SOLID)
 
+    ### ~~ grids labels next to buttons
     x=0
     for label in (theory_label, vel_label, phase_label, test_label):
         label.grid(row=x, column=1, sticky=W+E+S+N, pady=20, padx=50, ipadx=30)
         x += 1
 
 def nav_buttons(screen_):
+    """packs navigation buttons to screen and sets back and next buttons to
+    relevent screens dependant on screen"""
+    ### ~~ creates nav_frame to grid buttons to and grids to main frame
     nav_frame = Frame(screen_, bg="#CCFFFF")
     nav_frame.grid(row=3, column=0, padx=10, pady=10, sticky=N+E+S+W)
 
+    ### ~~ sets variables to change dependant on current screen
     back = 0
     next_ = 0
 
+    ### ~~ changes variable dependant on current screen
     if screen_ == theory_screen:
         back = home_screen
         next_ = vel_screen
@@ -95,12 +125,14 @@ def nav_buttons(screen_):
         next_ = test_screen
     elif screen_ == test_screen:
         back = phase_screen
-    
+
+    ### ~~ configures columns so buttons will move accrording to screeen size to relevant position
     x = 0
     while x < 3:
         nav_frame.grid_columnconfigure(x, weight=1)
         x += 1
 
+    ### ~~ creates button and applies navigation commands using variables
     back_button = Button(nav_frame, text="Back",
                              command=lambda:screen_raise(back))
     home_button = Button(nav_frame, text="Home",
@@ -108,10 +140,12 @@ def nav_buttons(screen_):
     next_button = Button(nav_frame, text="Next",
                              command=lambda:screen_raise(next_))
 
+    ### ~~ grids butons to relevent point on nav frame
     back_button.grid(row=0, column=0, sticky=W, ipadx=15, ipady=3)
     home_button.grid(row=0, column=1, ipadx=15, ipady=3)
     next_button.grid(row=0, column=2, sticky=E, ipadx=15, ipady=3)
-    
+
+    ### ~~~ hides navigation buttons on home screen and replaces them with identicle frame
     if screen_ == home_screen:
         home_button.grid_remove()
         back_button.grid_remove()
@@ -121,11 +155,13 @@ def nav_buttons(screen_):
         Frame(nav_frame, bg="#CCFFFF").grid(row=0, column=2, sticky=E, ipadx=32, ipady=15, padx=2)
 
 def text_image(screen_):
-    
-    
+    """creates text and image boxs on screen will have to be tweaked when using different images
+    also creates execute button for animations"""
+
+    ### ~~ allows for screen alignment for text/image frame to be adjusted to stretch with window resize
     screen_.grid_rowconfigure(2, weight=10)
     bulk_text_frame = Frame(screen_, bg="#CCFFFF")
-    bulk_text_frame.grid(row=2, column=0, columnspan=2, sticky=NS)
+    bulk_text_frame.grid(row=2, column=0, sticky=NS)
     bulk_text_frame.grid_columnconfigure(0, weight=1)
     bulk_text_frame.grid_columnconfigure(1, weight=1)
 
@@ -154,15 +190,16 @@ def text_image(screen_):
     execute_button.grid(row=1, column=0, sticky=E+S, padx=10, pady=10, ipady=3, ipadx=2)
 
 def help_screen():
-        help_ = Toplevel()
-        help_.focus_set()
-        help_.grab_set()
-        help_.title("Help")
-        help_.geometry("350x600")
-        help_.minsize(250, 500)
+    """creates help menu and freezes current screen when help menu is open"""
+    help_ = Toplevel()
+    help_.focus_set()
+    help_.grab_set()
+    help_.title("Help")
+    help_.geometry("350x600")
+    help_.minsize(250, 500)
     
 width_ = 1000
-height_ = 600
+height_ = 650
 
 LARGE_FONT = ("Verdana", 16)
 
