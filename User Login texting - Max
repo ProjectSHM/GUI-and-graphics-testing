@@ -3,32 +3,79 @@ import pickle
 
 root = Tk()
 
+def raise_frame(frame):
+    frame.tkraise()
+
+def login_home():
+    new_user_button = Button(login_home_frame, text="New User", command=lambda:raise_frame(new_user_frame))
+    existing_user_button = Button(login_home_frame, text="Existing user", command=lambda:raise_frame(existing_user_frame))
+
+    x = 0
+    for button in (new_user_button, existing_user_button):
+        button.grid(row=0, column=x)
+        x += 1
+
+    login()
+    new_login()
+
+def new_login():
+    new_user_label = Label(new_user_frame, text="User Name:")
+    new_password_label = Label(new_user_frame, text="Password:")
+    confirm_new_password_label = Label(new_user_frame, text="Confirm Password:")
+    
+    x = 0
+    for label in (new_user_label, new_password_label, confirm_new_password_label):
+        label.grid(row=x, column=0, sticky=E)
+        x += 1
+
+    new_user_entry = Entry(new_user_frame)
+    new_password_entry = Entry(new_user_frame, show="*")
+    confirm_new_password_entry = Entry(new_user_frame, show="*")
+
+    x = 0
+    for entry in (new_user_entry, new_password_entry, confirm_new_password_entry):
+        entry.grid(row=x, column=1)
+        x += 1
+
 def login():
-    user_label = Label(root, text="User Name:")
+    
+    user_label = Label(existing_user_frame, text="User Name:")
     user_label.grid(row=0, column=0, sticky=E)
 
-    user_entry = Entry(root)
+    user_entry = Entry(existing_user_frame)
     user_entry.grid(row=0, column=1)
 
-    password = Label(root, text="Password:")
+    password = Label(existing_user_frame, text="Password:")
     password.grid(row=1, column=0, sticky=E)
     
-    password_entry = Entry(root, show="*")
+    password_entry = Entry(existing_user_frame, show="*")
     password_entry.grid(row=1, column=1)
 
-    login_button= Button(root, text="Login", command=lambda:user_details())
+    login_button= Button(existing_user_frame, text="Login")
     login_button.grid(row=2, column=0, columnspan=2)
 
-    def user_details():
-        user_dict[user_entry.get()] = password_entry.get()
-        print str(user_entry.get())
-        print str(password_entry.get())
-        print user_dict
-
-    def user_save():
-        
-        
-    user_dict ={}
+def user_details():
+    global user_dict
+    user_dict[user_entry.get()] = password_entry.get()
+    print user_dict
+    user_save()
     
-login()    
+def user_save():
+    global user_dict
+    with open("save_data.txt", "wb") as f:
+        pickle.dump(user_dict, f)
+        
+        
+user_dict ={}
+
+login_home_frame = Frame(root)
+existing_user_frame = Frame(root)
+new_user_frame = Frame(root)
+
+for frame in (login_home_frame, existing_user_frame, new_user_frame):
+    frame.grid(row=0, column=0, sticky=N+W+E+S)
+
+raise_frame(login_home_frame)
+login_home()
+   
 root.mainloop()
