@@ -9,7 +9,7 @@ theory_animation.pack()
 radius = 50
 x_circle_list = []
 y_circle_list = []
-angle = 1.675*2
+angle = 1.675*3
 k = 0
 c = 0
 d = 0
@@ -66,12 +66,27 @@ def animation():
 
     c += 1
 
-    root.after(10, clear_screen, spring_particle, circle_line, circle_particle, sine_wave_particle, link_line, arc)
+    root.after(40, clear_screen, spring_particle, circle_line, circle_particle, sine_wave_particle, link_line, arc)
 
 def clear_screen(a, b, c, d, e, f):
     theory_animation.delete(a, b, c, d, e, f)
     animation()
+
+def final_clear():
+    global c
+    global k
+    global d
+    c = 0
+    k = 0
+    d = 0
+    theory_animation.delete("all")
+
+def enable_animation():
+    final_clear()
+    root.after(10, animation)
     
+execute = Button(root, text="execute", command=enable_animation)
+execute.pack()    
    
-animation()
+#animation()
 root.mainloop()
