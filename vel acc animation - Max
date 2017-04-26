@@ -39,7 +39,7 @@ image.create_text(367, 92, text="Time"), image.create_text(367, 212, text="Time"
 
 image.create_text(200,20, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")")
 image.create_text(200,160, text="v = "+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")")
-image.create_text(200,250, text="a = "+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")")
+image.create_text(200,250, text="a = -"+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")")
 time = 0.5
 
 def animation():
