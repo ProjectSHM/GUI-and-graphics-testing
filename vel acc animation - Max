@@ -43,7 +43,7 @@ def graphs():
 
     image.create_text(200,15, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
     image.create_text(200,155, text="v = "+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
-    image.create_text(200,245, text="a = -"+u'\u03A9'.lower()+u"\u00B2"+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+") = "u'\u03A9'.lower()+u"\u00B2"+"y", font=size)
+    image.create_text(200,245, text="a = -"+u'\u03A9'.lower()+u"\u00B2"+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+") = -"u'\u03A9'.lower()+u"\u00B2"+"y", font=size)
 
 def animation():
     global c
@@ -51,13 +51,17 @@ def animation():
     vel_sine = image.create_line(x_list[c]+20, vel_y_list[c]+200, x_list[c+1]+20, vel_y_list[c+1]+200, fill="red")
     acc_sine = image.create_line(x_list[c]+20, acc_y_list[c]+280, x_list[c+1]+20, acc_y_list[c+1]+280, fill="blue")
     c += 1
-    if c == 358*5-50:
+
+    if c >= 358*5-50:
+        execute_button.config(state=ACTIVE)
         return
+    
     root.after(1, animation)
 
 def reset():
     global c
     c = 0
+    execute_button.config(state=DISABLED)
     image.delete("all")
     graphs()
     animation()
