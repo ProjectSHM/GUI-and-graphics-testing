@@ -1,6 +1,6 @@
 from Tkinter import *
 import math
-
+import tkFont
 root = Tk()
 
 image = Canvas(root, width=400, height=320, bg="white")
@@ -19,6 +19,7 @@ A = 50
 
 angle = c*omega*time
 
+size = tkFont.Font(size=10)
 
 for f in range(1, 360*5-50, 1):
     amp_y_list.append(-A*math.sin(omega*time/8))
@@ -34,12 +35,12 @@ image.create_line(20,30, 25,35), image.create_line(20,170, 25, 175), image.creat
 image.create_line(370,80, 365, 75), image.create_line(370,200, 365,195), image.create_line(370,280 ,365,275)
 image.create_line(370,80, 365, 85), image.create_line(370,200, 365,205), image.create_line(370,280 ,365,285)
 
-image.create_text(31,20, text="Amplitude"), image.create_text(24,160, text="Velocity"), image.create_text(38, 250, text="Acceleration")
+image.create_text(36,20, text="Amplitude"), image.create_text(29,160, text="Velocity"), image.create_text(43, 250, text="Acceleration")
 image.create_text(367, 92, text="Time"), image.create_text(367, 212, text="Time"),image.create_text(367, 292, text="Time")
 
-image.create_text(200,20, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")")
-image.create_text(200,160, text="v = "+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")")
-image.create_text(200,250, text="a = -"+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")")
+image.create_text(200,15, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
+image.create_text(200,155, text="v = "+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
+image.create_text(200,245, text="a = -"+u'\u03A9'.lower()+u"\u00B2"+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+") = "u'\u03A9'.lower()+u"\u00B2"+"y", font=size)
 time = 0.5
 
 def animation():
