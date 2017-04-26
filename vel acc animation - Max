@@ -1,0 +1,46 @@
+from Tkinter import *
+import math
+
+root = Tk()
+
+image = Canvas(root, width=400, height=320)
+image.pack()
+
+amp_y_list = []
+acc_y_list = []
+vel_y_list = []
+
+x_list = []
+
+omega=0.5
+time=0.2
+c = 0
+A = 50
+
+angle = c*omega*time
+
+
+for f in range(1, 360*5, 1):
+    amp_y_list.append(-A*math.sin(omega*time/5))
+    vel_y_list.append(-omega*A*math.sin(omega*time/5))
+    acc_y_list.append(omega**2*A*math.sin(omega*time/5))
+    x_list.append(time)
+    time += 0.2
+
+time = 0.5
+
+def animation():
+    global c
+##    image.create_line(y_list[c]+160, x_list[c]+10, y_list[c+1]+160, x_list[c+1]+10)
+    image.create_line(x_list[c]+20, vel_y_list[c]+160, x_list[c+1]+20, vel_y_list[c+1]+160, fill="black")
+    image.create_line(x_list[c]+20, amp_y_list[c]+80, x_list[c+1]+20, amp_y_list[c+1]+80, fill="red")
+    image.create_line(x_list[c]+20, acc_y_list[c]+240, x_list[c+1]+20, acc_y_list[c+1]+240, fill="blue")
+    c += 1
+    if c == 358*5:
+        return
+    print c
+    root.after(1, animation)
+
+animation()
+
+root.mainloop()
