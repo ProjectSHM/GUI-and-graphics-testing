@@ -28,31 +28,43 @@ for f in range(1, 360*5-50, 1):
     x_list.append(time)
     time += 0.2
 
-image.create_line(20,30 ,20,130), image.create_line(20,170 ,20,230), image.create_line(20,260 ,20,305)
-image.create_line(20,80 ,370,80), image.create_line(20,200 ,370,200), image.create_line(20,280 ,370,280)
-image.create_line(20,30, 15,35), image.create_line(20,170, 15, 175), image.create_line(20,260, 15,265)
-image.create_line(20,30, 25,35), image.create_line(20,170, 25, 175), image.create_line(20,260, 25,265)
-image.create_line(370,80, 365, 75), image.create_line(370,200, 365,195), image.create_line(370,280 ,365,275)
-image.create_line(370,80, 365, 85), image.create_line(370,200, 365,205), image.create_line(370,280 ,365,285)
+time = 0.2
 
-image.create_text(36,20, text="Amplitude"), image.create_text(29,160, text="Velocity"), image.create_text(43, 250, text="Acceleration")
-image.create_text(367, 92, text="Time"), image.create_text(367, 212, text="Time"),image.create_text(367, 292, text="Time")
+def graphs():
+    image.create_line(20,30 ,20,130), image.create_line(20,170 ,20,230), image.create_line(20,260 ,20,305)
+    image.create_line(20,80 ,370,80), image.create_line(20,200 ,370,200), image.create_line(20,280 ,370,280)
+    image.create_line(20,30, 15,35), image.create_line(20,170, 15, 175), image.create_line(20,260, 15,265)
+    image.create_line(20,30, 25,35), image.create_line(20,170, 25, 175), image.create_line(20,260, 25,265)
+    image.create_line(370,80, 365, 75), image.create_line(370,200, 365,195), image.create_line(370,280 ,365,275)
+    image.create_line(370,80, 365, 85), image.create_line(370,200, 365,205), image.create_line(370,280 ,365,285)
 
-image.create_text(200,15, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
-image.create_text(200,155, text="v = "+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
-image.create_text(200,245, text="a = -"+u'\u03A9'.lower()+u"\u00B2"+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+") = "u'\u03A9'.lower()+u"\u00B2"+"y", font=size)
-time = 0.5
+    image.create_text(36,20, text="Amplitude"), image.create_text(29,160, text="Velocity"), image.create_text(43, 250, text="Acceleration")
+    image.create_text(367, 92, text="Time"), image.create_text(367, 212, text="Time"),image.create_text(367, 292, text="Time")
+
+    image.create_text(200,15, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
+    image.create_text(200,155, text="v = "+u'\u03A9'.lower()+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
+    image.create_text(200,245, text="a = -"+u'\u03A9'.lower()+u"\u00B2"+"Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+") = "u'\u03A9'.lower()+u"\u00B2"+"y", font=size)
 
 def animation():
     global c
-    image.create_line(x_list[c]+20, amp_y_list[c]+80, x_list[c+1]+20, amp_y_list[c+1]+80, fill="black")
-    image.create_line(x_list[c]+20, vel_y_list[c]+200, x_list[c+1]+20, vel_y_list[c+1]+200, fill="red")
-    image.create_line(x_list[c]+20, acc_y_list[c]+280, x_list[c+1]+20, acc_y_list[c+1]+280, fill="blue")
+    amp_sine = image.create_line(x_list[c]+20, amp_y_list[c]+80, x_list[c+1]+20, amp_y_list[c+1]+80, fill="black")
+    vel_sine = image.create_line(x_list[c]+20, vel_y_list[c]+200, x_list[c+1]+20, vel_y_list[c+1]+200, fill="red")
+    acc_sine = image.create_line(x_list[c]+20, acc_y_list[c]+280, x_list[c+1]+20, acc_y_list[c+1]+280, fill="blue")
     c += 1
     if c == 358*5-50:
         return
     root.after(1, animation)
 
-animation()
+def reset():
+    global c
+    c = 0
+    image.delete("all")
+    graphs()
+    animation()
+    
+graphs()
+
+execute_button = Button(root, text="Execute", command= reset)
+execute_button.pack()
 
 root.mainloop()
