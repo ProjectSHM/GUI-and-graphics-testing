@@ -1,0 +1,71 @@
+from Tkinter import *
+import math
+import tkFont
+
+root = Tk()
+
+def get_values():
+    y_list = []
+    x_list = []
+    
+    amplitude = int(amp_slider.get())
+    omega = int(omega_slider.get())*(3.14/8)
+    phi = int(phi_slider.get())*(3.14/8)
+
+    time = 0
+    for i in range (1,360,1):
+        y_list.append(round(-amplitude*math.sin((omega*time/16 + phi)),2))
+        x_list.append(time)
+        time += 1.
+
+    animate(x_list, y_list)
+    
+def animate(x, y):
+    global d
+
+    #print x
+    sine = image.create_line(x[d]+25, y[d]+160, x[d+1]+25, y[d+1]+160)
+    d +=1
+
+    if d == 360-2:
+        execute_button.config(state=ACTIVE)
+        return
+    
+    root.after(10, animate, x, y)
+
+def reset():
+    global d
+    d = 0
+    execute_button.config(state=DISABLED)
+    image.delete("all")
+    get_values()
+    
+d = 0    
+    
+size = tkFont.Font(size=14)
+
+image = Canvas(root, width=400, height=320, bg="white")
+image.grid(columnspan=4)
+
+equation_label = Label(root, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
+equation_label.grid(row=1, columnspan=4)
+
+execute_button = Button(root, text="Execute", command=reset)
+execute_button.grid(row=1, columnspan=4, sticky=E)
+
+amp_label = Label(root, text="A (meters)")
+amp_label.grid(row=2, column=0)
+amp_slider = Scale(root, from_=1, to=100, orient=HORIZONTAL)
+amp_slider.grid(row=3, column=0)
+
+omega_label= Label(root, text=u'\u03A9'.lower()+" (radians per second)")
+omega_label.grid(row=2, column=1)
+omega_slider = Scale(root, from_=1, to=8, orient=HORIZONTAL)
+omega_slider.grid(row=3, column=1)
+
+phi_label = Label(root, text=u'\u03A6'.lower()+" (radians)")
+phi_label.grid(row=2, column=2)
+phi_slider = Scale(root, from_=0, to=16, orient=HORIZONTAL)
+phi_slider.grid(row=3, column=2)
+
+root.mainloop()
