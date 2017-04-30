@@ -13,7 +13,7 @@ def get_values():
     phi = int(phi_slider.get())*(3.14/8)
 
     time = 0
-    for i in range (1,360,1):
+    for i in range (1,350,1):
         y_list.append(round(-amplitude*math.sin((omega*time/16 + phi)),2))
         x_list.append(time)
         time += 1.
@@ -24,29 +24,38 @@ def animate(x, y):
     global d
 
     #print x
-    sine = image.create_line(x[d]+25, y[d]+160, x[d+1]+25, y[d+1]+160)
+    sine = image.create_line(x[d]+25, y[d]+90, x[d+1]+25, y[d+1]+90, fill="red")
     d +=1
 
-    if d == 360-2:
+    if d == 350-2:
         execute_button.config(state=ACTIVE)
         return
     
     root.after(10, animate, x, y)
+
+def graph():
+    x_axis = image.create_line(25,30, 25, 150)
+    x_arrow = image.create_line(25,30, 20,35), image.create_line(25,30, 30,35)
+    y_axis = image.create_line(25,90, 380,90)
+    y_arrow = image.create_line(380,90, 375,85), image.create_line(380,90, 375,95)
+    y_text = image.create_text(380, 100, text="Time, (s)")
+    x_text = image.create_text(45,15, text="Amplitude, (m)")
 
 def reset():
     global d
     d = 0
     execute_button.config(state=DISABLED)
     image.delete("all")
+    graph()
     get_values()
-    
 d = 0    
     
 size = tkFont.Font(size=14)
 
-image = Canvas(root, width=400, height=320, bg="white")
+image = Canvas(root, width=400, height=160, bg="white")
 image.grid(columnspan=4)
 
+graph()
 equation_label = Label(root, text="y = Asin("+u'\u03A9'.lower()+"t + "+ u'\u03A6'.lower()+")", font=size)
 equation_label.grid(row=1, columnspan=4)
 
@@ -55,7 +64,7 @@ execute_button.grid(row=1, columnspan=4, sticky=E)
 
 amp_label = Label(root, text="A (meters)")
 amp_label.grid(row=2, column=0)
-amp_slider = Scale(root, from_=1, to=100, orient=HORIZONTAL)
+amp_slider = Scale(root, from_=1, to=50, orient=HORIZONTAL)
 amp_slider.grid(row=3, column=0)
 
 omega_label= Label(root, text=u'\u03A9'.lower()+" (radians per second)")
